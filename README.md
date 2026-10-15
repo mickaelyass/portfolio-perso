@@ -13,6 +13,9 @@ téléchargeable.
 
 - **Accueil** — présentation rapide et accroche.
 - **Projets** — vitrine des réalisations (aperçus et liens).
+- **Détail d'un projet** — page dédiée ouverte depuis une carte projet
+  (URL `#/projets/:id`) : visuel, contexte, points clés, technologies et
+  navigation précédent / suivant.
 - **À propos** — parcours et présentation.
 - **Compétences** — technologies et savoir-faire.
 - **Contact** — formulaire d'envoi d'e-mail via **EmailJS**.
@@ -35,11 +38,14 @@ portfolio/
 │   └── manifest.json · favicon.ico · logos
 └── src/
     ├── App.js                # rend <Layout/>
+    ├── data/
+    │   └── projects.js       # données des projets (liste + détails)
     ├── components/
-    │   ├── Layout.js         # assemble les sections en une page (scroll)
+    │   ├── Layout.js         # assemble les sections (scroll) + page détail
     │   ├── Header.js         # barre de navigation fixe
     │   ├── Home.js           # section « Accueil »
     │   ├── Projets.js        # section « Projets »
+    │   ├── ProjetDetail.js   # page « Détail d'un projet »
     │   ├── Apropos.js        # section « À propos »
     │   ├── Skills.js         # section « Compétences »
     │   ├── Contact.js        # formulaire EmailJS

@@ -3,90 +3,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, ArrowUpRight } from "lucide-react";
 
-import projet1 from "../assets/ptf1-landscape.png";
-import projet2 from "../assets/biostats.png";
-import projet3 from "../assets/code2-front.png";
-import projet4 from "../assets/codec-side.png";
-import projet5 from "../assets/image-composite-numerique-ordinateur-portable-divers-symboles_1048944-13026027.jpg";
-import projet6 from "../assets/voix_africaine.png";
-import projet7 from "../assets/clone_upwork.png";
+import projectsData from "../data/projects";
 
-const projectsData = [
-  {
-    id: 1,
-    title: "YASS BioAnalytics",
-    description:
-      "Application d'analyse biostatistique assistée par intelligence artificielle, développée pour faciliter l'analyse et l'interprétation des données de santé.",
-    image: projet2,
-    technologies: ["R", "RStudio", "Shiny", "IA", "Biostatistique"],
-    category: "Data & IA",
-    featured: true,
-  },
-
-  {
-    id: 2,
-    title: "GestiPerso",
-    description:
-      "Plateforme de gestion du personnel conçue lors d'un stage à la Direction Départementale de la Santé du Littoral. Développement d'API REST sécurisées et d'une interface web.",
-    image: projet1,
-    technologies: ["React", "Node.js", "PostgreSQL", "JWT"],
-    category: "Développement Web",
-    featured: true,
-  },
-
-  {
-    id: 3,
-    title: "Voix_Africaine",
-    description:
-      "Plateforme web de gestion d'œuvres littéraires permettant d'organiser les contenus par chapitres et de gérer les ressources audio associées.",
-    image: projet6,
-    technologies: ["FastAPI", "Python", "React", "Cloudinary"],
-    category: "Développement Web",
-    featured: true,
-  },
-
-  {
-    id: 4,
-    title: "Up Travail",
-    description:
-      "Conception d'un clone de la plateforme Upwork afin d'explorer l'architecture d'une application web de mise en relation entre utilisateurs.",
-    image: projet7,
-    technologies: ["Nest.js", "React", "MongoDB", "Prisma"],
-    category: "Développement Web",
-  },
-
-  {
-    id: 5,
-    title: "GoPark",
-    description:
-      "Projet académique autour de la modélisation et de la gestion d'un système de voiture autonome en C++, avec conception UML et gestion des rôles.",
-    image: projet3,
-    technologies: ["C++", "UML"],
-    category: "Projet académique",
-  },
-
-  {
-    id: 6,
-    title: "Système de gestion d'épicerie",
-    description:
-      "Application console développée en C pour la gestion des stocks, des produits et des transactions.",
-    image: projet4,
-    technologies: ["C", "Listes chaînées"],
-    category: "Projet académique",
-  },
-
-  {
-    id: 7,
-    title: "Installation & configuration de systèmes",
-    description:
-      "Travaux pratiques autour de l'installation et de la configuration de systèmes Windows et Linux sur différents environnements.",
-    image: projet5,
-    technologies: ["Windows", "Linux", "VirtualBox"],
-    category: "Systèmes",
-  },
-];
-
-function Projets() {
+function Projets({ onSelectProject }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProjects = projectsData.filter((project) => {
@@ -188,8 +107,19 @@ function Projets() {
                   duration: 0.5,
                   delay: index * 0.08,
                 }}
+                onClick={() => onSelectProject(project.id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelectProject(project.id);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Voir les détails du projet ${project.title}`}
                 className="
                   group
+                  cursor-pointer
                   bg-white
                   border
                   border-slate-200
