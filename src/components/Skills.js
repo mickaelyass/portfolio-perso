@@ -1,5 +1,5 @@
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Brain,
   Database,
@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 
 function Skills() {
+  const prefersReducedMotion = useReducedMotion();
+
   const skills = [
     {
       category: "Data, IA & Biostatistique",
@@ -103,7 +105,7 @@ function Skills() {
   ];
 
   return (
-    <section id="skills" className="w-full">
+    <section className="w-full">
 
       <div className="max-w-6xl mx-auto">
 
@@ -112,7 +114,7 @@ function Skills() {
         ========================== */}
         <div className="text-center mb-12">
 
-          <p className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-2">
+          <p className="text-sm font-semibold uppercase tracking-widest text-brand-600 mb-2">
             Expertise
           </p>
 
@@ -141,7 +143,7 @@ function Skills() {
             return (
               <motion.div
                 key={skillCategory.category}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{
@@ -173,10 +175,10 @@ function Skills() {
                     w-11
                     h-11
                     rounded-xl
-                    bg-blue-50
-                    text-blue-600
+                    bg-brand-50
+                    text-brand-600
                     flex-shrink-0
-                    group-hover:bg-blue-600
+                    group-hover:bg-brand-600
                     group-hover:text-white
                     transition-colors
                     duration-300
@@ -226,8 +228,8 @@ function Skills() {
                         text-slate-600
                         text-xs
                         font-medium
-                        hover:bg-blue-50
-                        hover:text-blue-700
+                        hover:bg-brand-50
+                        hover:text-brand-700
                         transition-colors
                       "
                     >

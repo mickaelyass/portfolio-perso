@@ -8,10 +8,21 @@ import Contact from './Contact';
 import Projets from './Projets';
 import Apropos from './Apropos';
 import ProjetDetail from './ProjetDetail';
+import Reveal from './Reveal';
 import { getProjectById } from '../data/projects';
-import { motion } from 'framer-motion';
 
 const SECTION_IDS = ['home', 'projets', 'apropos', 'skills', 'contact'];
+
+const DEFAULT_TITLE = 'Mickael Yass — Développeur Software & Data | Portfolio';
+const DEFAULT_DESCRIPTION =
+  'Portfolio de Yassegoungbe S. Mickael Bonheur — Développeur Software & Data à Cotonou (Bénin). Projets en développement web, data, biostatistique et intelligence artificielle appliquée à la santé.';
+
+function setMetaDescription(content) {
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) {
+    meta.setAttribute('content', content);
+  }
+}
 
 function getProjectIdFromHash() {
   const match = window.location.hash.match(/^#\/projets\/(\d+)$/);
@@ -81,12 +92,30 @@ function Layout() {
   const selectedProject =
     selectedProjectId !== null ? getProjectById(selectedProjectId) : null;
 
+  // SEO : titre + meta description dynamiques selon la page affichée
+  useEffect(() => {
+    if (selectedProject) {
+      document.title = `${selectedProject.title} — Mickael Yass`;
+      setMetaDescription(
+        `${selectedProject.description} Projet réalisé par Yassegoungbe S. Mickael Bonheur, Développeur Software & Data.`
+      );
+    } else {
+      document.title = DEFAULT_TITLE;
+      setMetaDescription(DEFAULT_DESCRIPTION);
+    }
+  }, [selectedProject]);
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+    <div className="min-h-screen flex flex-col bg-mist text-ink">
+
+      {/* Lien d'évitement (a11y) */}
+      <a href="#contenu" className="skip-link">
+        Aller au contenu principal
+      </a>
 
       <Header />
 
-      <main className="flex-grow pt-20">
+      <main id="contenu" className="flex-grow pt-20">
 
         {/* =========================
             PAGE DÉTAIL D'UN PROJET
@@ -103,76 +132,61 @@ function Layout() {
         {/* =========================
             ACCUEIL
         ========================== */}
-        <motion.section
+        <Reveal
+          as="section"
           id="home"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
           className="scroll-section max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
         >
           <Home />
-        </motion.section>
+        </Reveal>
 
 
         {/* =========================
             PROJETS
         ========================== */}
-        <motion.section
+        <Reveal
+          as="section"
           id="projets"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
           className="scroll-section max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
         >
           <Projets onSelectProject={openProject} />
-        </motion.section>
+        </Reveal>
 
 
         {/* =========================
             À PROPOS
         ========================== */}
-        <motion.section
+        <Reveal
+          as="section"
           id="apropos"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
           className="scroll-section max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
         >
           <Apropos />
-        </motion.section>
+        </Reveal>
 
 
         {/* =========================
             COMPÉTENCES
         ========================== */}
-        <motion.section
+        <Reveal
+          as="section"
           id="skills"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
           className="scroll-section max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
         >
           <Skills />
-        </motion.section>
+        </Reveal>
 
 
         {/* =========================
             CONTACT
         ========================== */}
-        <motion.section
+        <Reveal
+          as="section"
           id="contact"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
           className="scroll-section max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
         >
           <Contact />
-        </motion.section>
+        </Reveal>
 
         </>
         )}

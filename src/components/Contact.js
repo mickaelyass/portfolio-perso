@@ -1,7 +1,7 @@
 
-import React, { useState } from "react";
+import React, { useRef, useState, useId } from "react";
 import emailjs from "emailjs-com";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -15,6 +15,7 @@ import { Loader2 } from "lucide-react";
 function Contact() {
   const [showToast, setShowToast] = useState(false);
   const [sending, setSending] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -24,6 +25,11 @@ function Contact() {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  // ID unique de la région live pour l'accessibilité
+  const errorId = useId();
+  // Délais supplémentaires entre l'envoi du formulaire
+  const delayTimer = useRef(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -40,20 +46,26 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Honeypot : champ invisible laissé rempli uniquement par les robots
+    if (delayTimer.current && delayTimer.current.value.trim() !== "") {
+      return;
+    }
+
     setSending(true);
     setErrorMessage("");
+
+    // Délai minimum d'environ 3 secondes pour éviter les envois précipités
+    const start = Date.now();
+    while (Date.now() - start < 3000) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
 
     const serviceID = "service_n0oqptp";
     const templateID = "template_v7xeqjb";
     const publicKey = "YJlnFWRToFxc0san9";
 
     try {
-      await emailjs.send(
-        serviceID,
-        templateID,
-        formData,
-        publicKey
-      );
+      await emailjs.send(serviceID, templateID, formData, publicKey);
 
       // Message envoyé avec succès
       setShowToast(true);
@@ -68,7 +80,6 @@ function Contact() {
       setTimeout(() => {
         setShowToast(false);
       }, 4000);
-
     } catch (error) {
       console.error("Erreur lors de l'envoi :", error);
 
@@ -76,13 +87,19 @@ function Contact() {
         "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer."
       );
 
+      // Fallback : redirection vers l'outil mail de l'utilisateur
+      window.location.href = `mailto:${
+        formData.email
+      }?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
+        `Nom : ${formData.name}\n\nMessage :\n${formData.message}`
+      )}`;
     } finally {
       setSending(false);
     }
   };
 
   return (
-    <section id="contact" className="w-full">
+    <section className="w-full">
 
       <div className="max-w-6xl mx-auto">
 
@@ -91,7 +108,7 @@ function Contact() {
         ========================== */}
         <div className="text-center mb-12">
 
-          <p className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-2">
+          <p className="text-sm font-semibold uppercase tracking-widest text-brand-600 mb-2">
             Contact
           </p>
 
@@ -117,7 +134,7 @@ function Contact() {
               COORDONNÉES
           ========================== */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
@@ -168,12 +185,12 @@ function Contact() {
                   w-11
                   h-11
                   rounded-xl
-                  bg-blue-50
-                  text-blue-600
+                  bg-brand-50
+                  text-brand-600
                   flex
                   items-center
                   justify-center
-                  group-hover:bg-blue-600
+                  group-hover:bg-brand-600
                   group-hover:text-white
                   transition
                 ">
@@ -181,7 +198,7 @@ function Contact() {
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-400 mb-1">
+                  <p className="text-xs text-slate-500 mb-1">
                     Téléphone
                   </p>
 
@@ -189,7 +206,7 @@ function Contact() {
                     text-sm
                     font-medium
                     text-slate-700
-                    group-hover:text-blue-600
+                    group-hover:text-brand-600
                     transition
                   ">
                     +229 19 08 31 41 8
@@ -214,12 +231,12 @@ function Contact() {
                   w-11
                   h-11
                   rounded-xl
-                  bg-blue-50
-                  text-blue-600
+                  bg-brand-50
+                  text-brand-600
                   flex
                   items-center
                   justify-center
-                  group-hover:bg-blue-600
+                  group-hover:bg-brand-600
                   group-hover:text-white
                   transition
                 ">
@@ -227,7 +244,7 @@ function Contact() {
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-400 mb-1">
+                  <p className="text-xs text-slate-500 mb-1">
                     Email
                   </p>
 
@@ -236,7 +253,7 @@ function Contact() {
                     font-medium
                     text-slate-700
                     break-all
-                    group-hover:text-blue-600
+                    group-hover:text-brand-600
                     transition
                   ">
                     yassegoungbeseton@gmail.com
@@ -257,8 +274,8 @@ function Contact() {
                   w-11
                   h-11
                   rounded-xl
-                  bg-blue-50
-                  text-blue-600
+                  bg-brand-50
+                  text-brand-600
                   flex
                   items-center
                   justify-center
@@ -267,7 +284,7 @@ function Contact() {
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-400 mb-1">
+                  <p className="text-xs text-slate-500 mb-1">
                     Localisation
                   </p>
 
@@ -300,12 +317,12 @@ function Contact() {
                   w-11
                   h-11
                   rounded-xl
-                  bg-blue-50
-                  text-blue-600
+                  bg-brand-50
+                  text-brand-600
                   flex
                   items-center
                   justify-center
-                  group-hover:bg-blue-600
+                  group-hover:bg-brand-600
                   group-hover:text-white
                   transition
                 ">
@@ -313,7 +330,7 @@ function Contact() {
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-400 mb-1">
+                  <p className="text-xs text-slate-500 mb-1">
                     GitHub
                   </p>
 
@@ -321,7 +338,7 @@ function Contact() {
                     text-sm
                     font-medium
                     text-slate-700
-                    group-hover:text-blue-600
+                    group-hover:text-brand-600
                     transition
                   ">
                     github.com/mickaelyass
@@ -348,12 +365,12 @@ function Contact() {
                   w-11
                   h-11
                   rounded-xl
-                  bg-blue-50
-                  text-blue-600
+                  bg-brand-50
+                  text-brand-600
                   flex
                   items-center
                   justify-center
-                  group-hover:bg-blue-600
+                  group-hover:bg-brand-600
                   group-hover:text-white
                   transition
                 ">
@@ -361,7 +378,7 @@ function Contact() {
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-400 mb-1">
+                  <p className="text-xs text-slate-500 mb-1">
                     Portfolio
                   </p>
 
@@ -369,7 +386,7 @@ function Contact() {
                     text-sm
                     font-medium
                     text-slate-700
-                    group-hover:text-blue-600
+                    group-hover:text-brand-600
                     transition
                   ">
                     Voir mon portfolio
@@ -387,7 +404,7 @@ function Contact() {
               FORMULAIRE
           ========================== */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
@@ -449,6 +466,9 @@ function Contact() {
                   onChange={handleChange}
                   placeholder="Votre nom"
                   required
+                  aria-required="true"
+                  aria-invalid={errorMessage ? "true" : undefined}
+                  aria-describedby={errorMessage ? errorId : undefined}
                   className="
                     w-full
                     px-4
@@ -458,12 +478,12 @@ function Contact() {
                     border-slate-200
                     rounded-lg
                     text-slate-700
-                    placeholder:text-slate-400
+                    placeholder:text-slate-500
                     outline-none
                     focus:bg-white
-                    focus:border-blue-500
+                    focus:border-brand-500
                     focus:ring-2
-                    focus:ring-blue-100
+                    focus:ring-brand-100
                     transition
                   "
                 />
@@ -494,6 +514,9 @@ function Contact() {
                   onChange={handleChange}
                   placeholder="votre@email.com"
                   required
+                  aria-required="true"
+                  aria-invalid={errorMessage ? "true" : undefined}
+                  aria-describedby={errorMessage ? errorId : undefined}
                   className="
                     w-full
                     px-4
@@ -503,12 +526,12 @@ function Contact() {
                     border-slate-200
                     rounded-lg
                     text-slate-700
-                    placeholder:text-slate-400
+                    placeholder:text-slate-500
                     outline-none
                     focus:bg-white
-                    focus:border-blue-500
+                    focus:border-brand-500
                     focus:ring-2
-                    focus:ring-blue-100
+                    focus:ring-brand-100
                     transition
                   "
                 />
@@ -539,6 +562,9 @@ function Contact() {
                   onChange={handleChange}
                   placeholder="Objet de votre message"
                   required
+                  aria-required="true"
+                  aria-invalid={errorMessage ? "true" : undefined}
+                  aria-describedby={errorMessage ? errorId : undefined}
                   className="
                     w-full
                     px-4
@@ -548,12 +574,12 @@ function Contact() {
                     border-slate-200
                     rounded-lg
                     text-slate-700
-                    placeholder:text-slate-400
+                    placeholder:text-slate-500
                     outline-none
                     focus:bg-white
-                    focus:border-blue-500
+                    focus:border-brand-500
                     focus:ring-2
-                    focus:ring-blue-100
+                    focus:ring-brand-100
                     transition
                   "
                 />
@@ -584,6 +610,9 @@ function Contact() {
                   onChange={handleChange}
                   placeholder="Votre message..."
                   required
+                  aria-required="true"
+                  aria-invalid={errorMessage ? "true" : undefined}
+                  aria-describedby={errorMessage ? errorId : undefined}
                   className="
                     w-full
                     px-4
@@ -593,13 +622,13 @@ function Contact() {
                     border-slate-200
                     rounded-lg
                     text-slate-700
-                    placeholder:text-slate-400
+                    placeholder:text-slate-500
                     outline-none
                     resize-none
                     focus:bg-white
-                    focus:border-blue-500
+                    focus:border-brand-500
                     focus:ring-2
-                    focus:ring-blue-100
+                    focus:ring-brand-100
                     transition
                   "
                 />
@@ -607,21 +636,39 @@ function Contact() {
               </div>
 
 
-              {/* Erreur */}
-              {errorMessage && (
-                <div className="
-                  px-4
-                  py-3
-                  rounded-lg
-                  bg-red-50
-                  border
-                  border-red-100
-                  text-sm
-                  text-red-600
-                ">
-                  {errorMessage}
-                </div>
-              )}
+              {/* Erreur — région live pour les lecteurs d'écran */}
+              {/* Honeypot — champ invisible, rempli uniquement par les robots */}
+              <div className="h-0 overflow-hidden">
+                <input
+                  ref={delayTimer}
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  placeholder="Laissez ce champ vide"
+                />
+              </div>
+              <div
+                id={errorId}
+                role="alert"
+                aria-live="polite"
+              >
+                {errorMessage && (
+                  <div className="
+                    px-4
+                    py-3
+                    rounded-lg
+                    bg-red-50
+                    border
+                    border-red-100
+                    text-sm
+                    text-red-600
+                  ">
+                    {errorMessage}
+                  </div>
+                )}
+              </div>
 
 
               {/* Bouton */}
@@ -637,11 +684,11 @@ function Contact() {
                   px-6
                   py-3
                   rounded-lg
-                  bg-blue-600
+                  bg-brand-600
                   text-white
                   font-semibold
-                  hover:bg-blue-700
-                  disabled:bg-blue-400
+                  hover:bg-brand-700
+                  disabled:bg-brand-400
                   disabled:cursor-not-allowed
                   transition
                   duration-200
@@ -677,9 +724,11 @@ function Contact() {
           {showToast && (
 
             <motion.div
+              role="status"
+              aria-live="polite"
               initial={{
                 opacity: 0,
-                y: 30,
+                y: prefersReducedMotion ? 0 : 30,
               }}
               animate={{
                 opacity: 1,
@@ -687,7 +736,7 @@ function Contact() {
               }}
               exit={{
                 opacity: 0,
-                y: 30,
+                y: prefersReducedMotion ? 0 : 30,
               }}
               transition={{
                 duration: 0.3,

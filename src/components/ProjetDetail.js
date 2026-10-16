@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,6 +9,7 @@ import {
 import projectsData from "../data/projects";
 
 function ProjetDetail({ project, onBack, onSelectProject }) {
+  const prefersReducedMotion = useReducedMotion();
   const index = projectsData.findIndex((p) => p.id === project.id);
   const previousProject = index > 0 ? projectsData[index - 1] : null;
   const nextProject =
@@ -36,8 +37,8 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
           text-sm
           font-medium
           text-slate-600
-          hover:border-blue-500
-          hover:text-blue-600
+          hover:border-brand-500
+          hover:text-brand-600
           transition-colors
           duration-200
         "
@@ -51,7 +52,7 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
           VISUEL + TITRE
       ========================== */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="
@@ -92,11 +93,11 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
 
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <p className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-2">
+        <p className="text-sm font-semibold uppercase tracking-widest text-brand-600 mb-2">
           Projet
         </p>
 
@@ -120,7 +121,7 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
 
           {/* À propos */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
             className="bg-white border border-slate-200 rounded-2xl p-6"
@@ -137,7 +138,7 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
 
           {/* Points clés */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-white border border-slate-200 rounded-2xl p-6"
@@ -154,7 +155,7 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
                 >
                   <CheckCircle2
                     size={19}
-                    className="flex-shrink-0 mt-0.5 text-blue-600"
+                    className="flex-shrink-0 mt-0.5 text-brand-600"
                   />
                   {feature}
                 </li>
@@ -170,19 +171,19 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
 
           {/* Informations */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
             className="bg-white border border-slate-200 rounded-2xl p-6"
           >
             <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900 mb-4">
-              <Info size={19} className="text-blue-600" />
+              <Info size={19} className="text-brand-600" />
               Informations
             </h2>
 
             <dl className="space-y-4">
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                <dt className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-1">
                   Catégorie
                 </dt>
                 <dd className="text-sm text-slate-700">
@@ -191,7 +192,7 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
               </div>
 
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                <dt className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-1">
                   Contexte
                 </dt>
                 <dd className="text-sm text-slate-700">
@@ -204,13 +205,13 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
 
           {/* Technologies */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="bg-white border border-slate-200 rounded-2xl p-6"
           >
             <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900 mb-4">
-              <Layers size={19} className="text-blue-600" />
+              <Layers size={19} className="text-brand-600" />
               Technologies
             </h2>
 
@@ -260,8 +261,8 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
               text-sm
               font-medium
               text-slate-600
-              hover:border-blue-500
-              hover:text-blue-600
+              hover:border-brand-500
+              hover:text-brand-600
               transition-colors
               duration-200
             "
@@ -292,8 +293,8 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
               text-sm
               font-medium
               text-slate-600
-              hover:border-blue-500
-              hover:text-blue-600
+              hover:border-brand-500
+              hover:text-brand-600
               transition-colors
               duration-200
             "

@@ -2,11 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
   html {
     scroll-behavior: smooth;
   }
-  
-  .scroll-section {
-    scroll-margin-top: 5rem;
+
+  body {
+    @apply font-sans bg-mist text-ink antialiased;
   }
-    
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  /* Focus visible partout (clavier) */
+  :focus-visible {
+    outline: 2px solid theme("colors.brand.600");
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Ancrage sous le header fixe */
+  .scroll-section {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Lien d'évitement (skip-link) : masqué tant qu'il n'a pas le focus */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-white focus:shadow-card;
+  }
+
+  /* Dégradé pour le point focal du hero */
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-600 to-accent-500 bg-clip-text text-transparent;
+  }
+}
+
+/* Respect de prefers-reduced-motion (animations CSS) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,28 +1,61 @@
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Search, ArrowUpRight } from "lucide-react";
 
 import projectsData from "../data/projects";
 
-function Projets({ onSelectProject }) {
-  const [searchTerm, setSearchTerm] = useState("");
+const CATEGORY_OPTIONS = [
+  { value: "all", label: "Tous" },
+  { value: "web", label: "Développement Web" },
+  { value: "data", label: "Data & IA" },
+  { value: "academic", label: "Projet académique" },
+  { value: "systems", label: "Systèmes" },
+];
 
-  const filteredProjects = projectsData.filter((project) => {
-    const search = searchTerm.toLowerCase();
+const normalizeSearch = (value) =>
+  value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+function filterProjects(projects, searchTerm, category) {
+  const query = normalizeSearch(searchTerm);
+
+  return projects.filter((project) => {
+    if (category !== "all" && project.category !== category) {
+      return false;
+    }
+
+    if (!query) {
+      return true;
+    }
 
     return (
-      project.title.toLowerCase().includes(search) ||
-      project.description.toLowerCase().includes(search) ||
-      project.category.toLowerCase().includes(search) ||
-      project.technologies.some((tech) =>
-        tech.toLowerCase().includes(search)
-      )
+      normalizeSearch(project.title).includes(query) ||
+      normalizeSearch(project.description).includes(query) ||
+      normalizeSearch(project.category).includes(query) ||
+      project.technologies.some((tech) => normalizeSearch(tech).includes(query))
     );
   });
+}
+
+function Projets({ onSelectProject }) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("all");
+  const prefersReducedMotion = useReducedMotion();
+
+  const categoryCounts = useMemo(() => {
+    const counts = new Map();
+    for (const project of projectsData) {
+      counts.set(project.category, (counts.get(project.category) || 0) + 1);
+    }
+    return counts;
+  }, []);
+
+  const filteredProjects = useMemo(() => {
+    return filterProjects(projectsData, searchTerm, category);
+  }, [searchTerm, category]);
 
   return (
-    <section id="projets" className="w-full">
+    <section className="w-full">
 
       <div className="max-w-6xl mx-auto">
 
@@ -31,7 +64,7 @@ function Projets({ onSelectProject }) {
         ========================== */}
         <div className="text-center mb-12">
 
-          <p className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-2">
+          <p className="text-sm font-semibold uppercase tracking-widest text-brand-600 mb-2">
             Portfolio
           </p>
 
@@ -57,7 +90,7 @@ function Projets({ onSelectProject }) {
 
             <Search
               size={19}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
             />
 
             <input
@@ -75,11 +108,11 @@ function Projets({ onSelectProject }) {
                 border-slate-200
                 rounded-xl
                 text-slate-700
-                placeholder:text-slate-400
+                placeholder:text-slate-500
                 outline-none
-                focus:border-blue-500
+                focus:border-brand-500
                 focus:ring-2
-                focus:ring-blue-100
+                focus:ring-brand-100
                 transition
               "
             />
@@ -90,17 +123,50 @@ function Projets({ onSelectProject }) {
 
 
         {/* =========================
+            FILTRES PAR CATÉGORIE
+        ========================= */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10" role="group" aria-label="Filtrer les projets par catégorie">
+          {CATEGORY_OPTIONS.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setCategory(option.value)}
+              className={
+                category === option.value
+                  ? "inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-600 text-white font-semibold shadow-card"
+                  : "inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium hover:border-brand-400 hover:text-brand-600 transition-colors"
+              }
+              aria-pressed={category === option.value}
+            >
+              {option.label}
+              <span
+                className={`text-xs font-medium ${category === option.value ? "text-brand-100" : "text-slate-400"}`}
+              >
+                {categoryCounts.get(option.label) || 0}
+              </span>
+            </button>
+          ))}
+        </div>
+
+
+        {/* =========================
             PROJETS
-        ========================== */}
-        {filteredProjects.length > 0 ? (
+        ========================= */}
+        <AnimatePresence initial={false}>
+          {filteredProjects.length > 0 ? (
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <motion.div
+              key="projects-grid"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.3 } }}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
 
-            {filteredProjects.map((project, index) => (
+              {filteredProjects.map((project, index) => (
 
-              <motion.article
+                <motion.article
                 key={project.id}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{
@@ -183,7 +249,7 @@ function Projets({ onSelectProject }) {
                       text-xl
                       font-bold
                       text-slate-900
-                      group-hover:text-blue-600
+                      group-hover:text-brand-600
                       transition-colors
                     ">
                       {project.title}
@@ -194,7 +260,7 @@ function Projets({ onSelectProject }) {
                       className="
                         flex-shrink-0
                         text-slate-300
-                        group-hover:text-blue-600
+                        group-hover:text-brand-600
                         transition-colors
                       "
                     />
@@ -243,7 +309,8 @@ function Projets({ onSelectProject }) {
 
             ))}
 
-          </div>
+        </motion.div>
+
 
         ) : (
 
@@ -263,6 +330,8 @@ function Projets({ onSelectProject }) {
           </div>
 
         )}
+
+        </AnimatePresence>
 
       </div>
 

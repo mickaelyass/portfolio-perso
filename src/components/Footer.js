@@ -11,7 +11,7 @@ function Footer() {
             © {new Date().getFullYear()} Yassegoungbe S. Mickael Bonheur.
           </p>
 
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500">
             Software & Data
           </p>
 

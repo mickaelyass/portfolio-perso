@@ -1,9 +1,11 @@
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import React from "react";
 import profil from "../assets/profil.jpg";
 
 function Apropos() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section className="w-full">
 
@@ -12,7 +14,7 @@ function Apropos() {
         {/* En-tête */}
         <div className="text-center mb-12">
 
-          <p className="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-2">
+          <p className="text-sm font-semibold uppercase tracking-widest text-brand-600 mb-2">
             Profil
           </p>
 
@@ -43,7 +45,7 @@ function Apropos() {
               IMAGE
           ========================== */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
@@ -81,7 +83,7 @@ function Apropos() {
               TEXTE
           ========================== */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
             viewport={{ once: true }}
@@ -135,8 +137,8 @@ function Apropos() {
                 px-3
                 py-2
                 rounded-lg
-                bg-blue-50
-                text-blue-700
+                bg-brand-50
+                text-brand-700
                 text-sm
                 font-medium
               ">
