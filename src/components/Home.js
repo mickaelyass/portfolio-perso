@@ -60,7 +60,7 @@ function Home() {
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
               </span>
 
-              <span className="text-sm font-medium text-slate-700">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 Disponible pour de nouveaux projets
               </span>
             </motion.div>
@@ -85,7 +85,7 @@ function Home() {
             {/* Sous-titre — positionnement */}
             <motion.p
               variants={item}
-              className="max-w-2xl text-base sm:text-lg text-slate-600 leading-relaxed mb-8 mx-auto md:mx-0"
+              className="max-w-2xl text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8 mx-auto md:mx-0"
             >
               Je conçois des solutions logicielles et des outils Data adaptés
               aux besoins des utilisateurs — avec un focus sur la santé et

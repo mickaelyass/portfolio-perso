@@ -85,6 +85,19 @@ function Header() {
     });
   };
 
+  // Thème sombre : applique la classe dark sur <html> et mémorise le choix
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
+  const toggleTheme = () => setDarkMode((prev) => !prev);
+
   return (
     <>
       <header

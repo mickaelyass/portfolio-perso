@@ -106,7 +106,7 @@ function Layout() {
   }, [selectedProject]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-mist text-ink">
+    <div className="min-h-screen flex flex-col bg-mist dark:bg-slate-950 text-ink dark:text-slate-100">
 
       {/* Lien d'évitement (a11y) */}
       <a href="#contenu" className="skip-link">

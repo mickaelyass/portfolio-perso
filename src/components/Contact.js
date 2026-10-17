@@ -116,7 +116,7 @@ function Contact() {
             Travaillons ensemble
           </h2>
 
-          <p className="max-w-2xl mx-auto text-slate-600 leading-relaxed">
+          <p className="max-w-2xl mx-auto text-slate-600 dark:text-slate-400 leading-relaxed">
             Vous avez un projet, une idée ou une opportunité à discuter ?
             N'hésitez pas à me contacter.
           </p>

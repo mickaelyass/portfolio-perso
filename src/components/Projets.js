@@ -334,8 +334,8 @@ function Projets({ onSelectProject }) {
                           px-2.5
                           py-1
                           rounded-md
-                          bg-slate-100
-                          text-slate-600
+                          bg-slate-100 dark:bg-slate-800
+                          text-slate-600 dark:text-slate-300
                           text-xs
                           font-medium
                         "
