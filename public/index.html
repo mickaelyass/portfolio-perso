@@ -80,7 +80,7 @@
     <script>
       (function() {
         var dark = localStorage.getItem('theme');
-        var sys = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var sys = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (dark === 'dark' || (!dark && sys)) {
           document.documentElement.classList.add('dark');
         }
