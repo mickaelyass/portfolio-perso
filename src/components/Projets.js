@@ -13,6 +13,14 @@ const CATEGORY_OPTIONS = [
   { value: "systems", label: "Systèmes" },
 ];
 
+const CATEGORY_MAP = {
+  web: "Développement Web",
+  data: "Data & IA",
+  academic: "Projet académique",
+  systems: "Systèmes",
+};
+
+
 // Liens externes Code / Démo par projet (id → urls)
 const PROJECT_LINKS = {
   1: { github: "https://github.com/mickaelyass/yass-bioanalytics", demo: null },
@@ -31,7 +39,7 @@ function filterProjects(projects, searchTerm, category) {
   const query = normalizeSearch(searchTerm);
 
   return projects.filter((project) => {
-    if (category !== "all" && project.category !== category) {
+    if (category !== "all" && project.category !== CATEGORY_MAP[category]) {
       return false;
     }
 
