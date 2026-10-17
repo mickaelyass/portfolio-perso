@@ -105,7 +105,7 @@ function Apropos() {
               text-base
               md:text-lg
               leading-relaxed
-              text-slate-600
+              text-slate-600 dark:text-slate-400
               mb-5
             ">
               Diplômé en Systèmes d'Information et Réseaux Informatiques,
