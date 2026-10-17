@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUp, Menu, X } from "lucide-react";
+import { ArrowUp, Menu, X, Sun, Moon } from "lucide-react";
 import logo from "../assets/logod.svg";
 
 const NAV_LINKS = [
@@ -15,6 +15,14 @@ function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme");
+      if (saved) return saved === "dark";
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false;
+  });
   const prefersReducedMotion = useReducedMotion();
 
   // Header : transparent en haut → fond flouté après 50px de scroll
@@ -138,6 +146,14 @@ function Header() {
           >
             Me contacter
           </a>
+
+          <button
+            onClick={toggleTheme}
+            className="ml-3 p-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors"
+            aria-label={darkMode ? "Passer en mode clair" : "Passer en mode sombre"}
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
         </nav>
 
         {/* Bouton menu mobile */}

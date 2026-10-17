@@ -1,7 +1,7 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Search, ArrowUpRight } from "lucide-react";
+import { Search, ArrowUpRight, ExternalLink, GitBranch } from "lucide-react";
 
 import projectsData from "../data/projects";
 
@@ -12,6 +12,17 @@ const CATEGORY_OPTIONS = [
   { value: "academic", label: "Projet académique" },
   { value: "systems", label: "Systèmes" },
 ];
+
+// Liens externes Code / Démo par projet (id → urls)
+const PROJECT_LINKS = {
+  1: { github: "https://github.com/mickaelyass/yass-bioanalytics", demo: null },
+  2: { github: "https://github.com/mickaelyass/gestipersonnel", demo: null },
+  3: { github: "https://github.com/mickaelyass/voix_africaine", demo: null },
+  4: { github: "https://github.com/mickaelyass/up-travail", demo: null },
+  5: { github: null, demo: null },
+  6: { github: null, demo: null },
+  7: { github: null, demo: null },
+};
 
 const normalizeSearch = (value) =>
   value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -164,6 +175,7 @@ function Projets({ onSelectProject }) {
 
               {filteredProjects.map((project, index) => (
 
+
                 <motion.article
                 key={project.id}
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 25 }}
@@ -235,6 +247,38 @@ function Projets({ onSelectProject }) {
                       {project.category}
                     </span>
 
+                  </div>
+
+                  {/* Actions : Détail / Code / Démo */}
+                  <div className="mt-6 flex items-center justify-between gap-3 pt-4 border-t border-slate-100">
+                    <button
+                      onClick={() => onSelectProject(project.id)}
+                      className="flex-1 px-4 py-2 rounded-lg bg-brand-50 text-brand-700 text-xs font-semibold border border-brand-100 hover:bg-brand-100 transition-colors"
+                    >
+                      Voir le détail
+                    </button>
+                    {PROJECT_LINKS[project.id]?.github && (
+                      <a
+                        href={PROJECT_LINKS[project.id]?.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Code source du projet ${project.title}`}
+                        className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 text-xs font-semibold hover:bg-brand-600 hover:text-white flex items-center gap-2 transition-colors"
+                      >
+                        <GitBranch size={14} /> Code
+                      </a>
+                    )}
+                    {PROJECT_LINKS[project.id]?.demo && (
+                      <a
+                        href={PROJECT_LINKS[project.id]?.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Démo live du projet ${project.title}`}
+                        className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 text-xs font-semibold hover:bg-brand-600 hover:text-white flex items-center gap-2 transition-colors"
+                      >
+                        <ExternalLink size={14} /> Démo
+                      </a>
+                    )}
                   </div>
 
                 </div>

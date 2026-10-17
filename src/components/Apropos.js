@@ -187,6 +187,37 @@ function Apropos() {
 
         </div>
 
+        {/* =========================\n            CHIFFRES-CLÉS\n        ========================== */}\n        <div className="mt-12 pt-8 border-t border-slate-200 grid sm:grid-cols-3 gap-6 text-center">
+          <div className="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+            <p className="text-2xl font-bold text-ink mb-1">7+</p>
+            <p className="text-sm text-slate-600 uppercase tracking-widest">Projets réalisés</p>
+          </div>
+          <div className="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+            <p className="text-2xl font-bold text-ink mb-1">1</p>
+            <p className="text-sm text-slate-600 uppercase tracking-widest">Stage en entreprise</p>
+          </div>
+          <div className="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+            <p className="text-2xl font-bold text-brand-600 mb-1">Data • Web • IA</p>
+            <p className="text-sm text-slate-600 uppercase tracking-widest">Domaines d'expertise</p>
+          </div>
+        </div>
+
+        {/* =========================\n            BOUTONS D'ACTION\n        ========================== */}\n        <div className="mt-10 flex flex-wrap gap-4 justify-center md:justify-start">
+          <a
+            href="#contact"
+            className="px-6 py-3 rounded-xl bg-brand-600 text-white font-medium hover:bg-brand-700 transition-colors shadow-card hover:shadow-lg"
+          >
+            Me contacter
+          </a>
+          <a
+            href="/cv.pdf"
+            download
+            className="px-6 py-3 rounded-xl bg-white text-slate-700 font-medium border border-slate-200 hover:border-brand-500 hover:text-brand-600 transition-colors"
+          >
+            Télécharger mon CV
+          </a>
+        </div>
+
       </div>
 
     </section>

@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,6 +15,18 @@ function ProjetDetail({ project, onBack, onSelectProject }) {
   const previousProject = index > 0 ? projectsData[index - 1] : null;
   const nextProject =
     index < projectsData.length - 1 ? projectsData[index + 1] : null;
+
+  // Met à jour le titre du document et la meta description dynamiquement
+  useEffect(() => {
+    document.title = `${project.title} — Mickael Yass | Portfolio`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        "content",
+        `${project.description} — Portfolio de Yassegoungbe S. Mickael Bonheur`
+      );
+    }
+  }, [project.title, project.description]);
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
