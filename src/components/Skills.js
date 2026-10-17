@@ -205,7 +205,7 @@ function Skills() {
                 {/* Description */}
                 <p className="
                   text-sm
-                  text-slate-500
+                  text-slate-500 dark:text-slate-400
                   leading-relaxed
                   mb-5
                 ">
